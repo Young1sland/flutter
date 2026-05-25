@@ -1,6 +1,7 @@
 # Widget
 
 ## Scaffold
+
 화면의 기본 레이아웃 뼈대를 만들어주는 위젯
 
 - AppBar (상단 바): 상단 헤더 영역
@@ -10,12 +11,13 @@
 - BottomNavigationBar (하단 탭): 하단 네비게이션
 - SnackBar (알림 메시지)
 
-
 ## Container
+
 여러 UI 속성을 한 번에 처리하는 종합 위젯.
 여러 위젯을 한 번에 쓰는 편의용으로 성능 최적화할 때는 Padding, SizedBox 등으로 쪼개는 게 더 좋음
 
 대표 기능들
+
 - 크기 설정 (width, height)
 - 색상 (color)
 - 여백 (padding, margin)
@@ -39,5 +41,6 @@ Container(
 ```
 
 ## Padding & Margin
+
 padding = 내부 여백 (안쪽 공간). 컨텐츠와 테두리 사이 거리
 margin = 외부 여백 (바깥 공간). 다른 요소와의 거리

@@ -86,6 +86,33 @@ super.message =
 
 ```
 
+### map & where & asyncMap
+
+```dart
+//map
+final numbers = [1, 2, 3];
+
+final result = numbers.map((n) {
+  return n * 2;
+});
+
+print(result);
+
+
+//where: 필터링
+stream.where((x) => x > 10)
+
+
+//map: 데이터가 하나인경우에도 변환을 위해 사용되기도 한다.
+stream.map((x) => x * 2)
+asyncMap
+
+//asyncMap: 비동기 변환
+stream.asyncMap((x) async {
+  return await api(x);
+})
+```
+
 ## const
 
 - 컴파일 타임에 생성됨. immutable (절대 변경 불가). 같은 값이면 동일 객체(shared instance)
@@ -682,3 +709,88 @@ stockPrice().listen((price) {
 ```
 
 - listen 의미: 값 올 때마다 실행
+
+## factory 생성자
+
+factory는 Dart에서 사용하는 팩토리 생성자(factory constructor). 객체를 생성하는 특별한 생성자.
+
+### 1. 일반 생성자 vs factory 생성자
+
+```dart
+일반 생성자
+class User {
+  final String name;
+
+  User(this.name);
+}
+
+
+factory 생성자
+factory User.fromJson(Map<String, dynamic> json) {
+  return User(json['name']);
+}
+```
+
+- 객체를 가공해서 만들 수 있음
+- 다른 객체를 반환 가능하며 기존 객체 재사용 가능
+- 생성 전에 로직 수행 가능
+
+```dart
+//예시
+//Supabase SDK의 User 객체를 앱 내부에서 사용하는 UserModel로 변환
+factory UserModel.fromSUpabaseUser(User user) {}
+```
+
+## try on catch
+
+```dart
+try {
+  // 에러 발생 가능 코드
+}
+on ExceptionType catch (e) {
+  // ExceptionType의 특정 타입 에러만 잡아 처리
+}
+catch (e) {
+  // 그 외 모든 에러 처리
+}
+finally {
+  // 성공/실패 상관없이 항상 실행
+}
+```
+
+예시1
+
+```dart
+try {
+  // 코드
+}
+on FormatException {
+  print('형식 오류');
+}
+on TimeoutException {
+  print('시간 초과');
+}
+catch (e) {
+  print('기타 에러: $e');
+}
+
+```
+
+예시2
+
+```dart
+try {
+  await api.login();
+}
+on AuthException catch (e) {
+  throw AuthenticationException(message: e.message);
+}
+catch (e) {
+  throw Exception('알 수 없는 오류');
+}
+finally {
+  loading = false;
+}
+```
+
+- AuthException 예외 발생하면 AuthenticationException 예외 throw

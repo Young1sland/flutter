@@ -21,3 +21,4 @@ linter:
     prefer_relative_imports: true
     sort_constructors_first: true
     unawaited_futures: true
+    prefer_initializing_formals: false

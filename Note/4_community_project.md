@@ -356,4 +356,3 @@ abstract class RegisterModule {
 }
 
 ```
-

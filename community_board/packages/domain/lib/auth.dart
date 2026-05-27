@@ -1,1 +1,1 @@
-export 'package:domain/auth.dart';
+export 'src/auth/auth.dart';

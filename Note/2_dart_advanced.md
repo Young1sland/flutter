@@ -100,7 +100,11 @@ print(result);
 
 
 //where: 필터링
-stream.where((x) => x > 10)
+final nums = [1, 2, 3, 4];
+final even = nums.where((e) => e % 2 == 0);
+//first, last는 Iterable<T>에 있는 프로퍼티. 각각 처음과 마지막을 가져온다.
+print(even.first); //2
+print(even.last) //4
 
 
 //map: 데이터가 하나인경우에도 변환을 위해 사용되기도 한다.

@@ -89,3 +89,16 @@ class MyWidget extends StatelessWidget {
 ## Widget Catalog
 
 <https://docs.flutter.dev/ui/widgets>
+
+## Flutter Code Snippet 자동 완성
+
+아래처럼 입력 후 TAB(또는 list에서 선택)하면 기본 코드를 자동 완성해준다. 
+
+| 입력          | 결과                 |
+| ----------- | ------------------ |
+| `stless`    | StatelessWidget 생성 |
+| `stful`     | StatefulWidget 생성  |
+| `build`     | build 메서드 생성       |
+| `initState` | initState 생성       |
+| `dispose`   | dispose 생성         |
+

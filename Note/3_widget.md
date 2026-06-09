@@ -826,3 +826,55 @@ TextField 예시
       ...
     );
 ```
+
+## Form & TextFormField
+
+### TextFormField
+
+Form 검증(validation) 기능이 추가된 TextField
+
+```ts
+TextFormField(
+  validator: (value) {
+    if (value == null || value.isEmpty) {
+      return 'Email is required';
+    }
+
+    return null;
+  },
+)
+```
+
+
+## Form
+
+여러 개의 입력창(TextFormField)을 하나의 그룹으로 묶어서 검증(validation)과 저장(save)을 관리하는 위젯
+
+```ts
+final _formKey =
+    GlobalKey<FormState>(); //form 제어 위한 key 정의
+
+Form(
+  key: _formKey,
+  child: Column(
+    children: [
+      TextFormField(
+        validator: (value) { ... },
+        onSaved: (newValue) => print(newValue),
+      ),
+      TextFormField(
+        validator: (value) { ... };
+        onSaved: (newValue) => print(newValue),
+      ),
+      ...
+    ],
+  ),
+)
+
+
+_formKey.currentState!.validate(); //validate()는 모든 TextFormField 검사하여 에러 표시
+
+
+_formKey.currentState!.save(); //form의 모든 onSaved 실행 됨. 요즘엔 잘 안쓴다고 한다..
+```
+

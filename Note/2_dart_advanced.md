@@ -200,9 +200,11 @@ class Person {
 ```sh
 dart pub add equatable
 ```
+vscode에서 Equatable을 사용하도록 설정한다.  
+Open User Settings => Dart-data-class-generator: Use Equatable true 설정. If true, uses equatable for value equality and hashcode.  
 
- `List<Object> get props`의 리스트에 들어간 값들 기준으로 비교함
-
+ `List<Object> get props`의 리스트에 들어간 값들 기준으로 비교함  
+ 
 ```dart
 import 'package:equatable/equatable.dart';
 
@@ -798,3 +800,113 @@ finally {
 ```
 
 - AuthException 예외 발생하면 AuthenticationException 예외 throw
+
+
+## Dio
+서버 API 통신을 편하게 해주는 고급 HTTP 클라이언트
+```dart
+import 'package:dio/dio.dart';
+
+class ApiService {
+  ApiService() {
+    _dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          // 요청이 서버로 나가기 전에 실행됨
+          options.headers['Accept'] = 'application/json';
+
+          // 예: 토큰이 있다면 모든 요청에 자동 추가
+          const accessToken = 'sample-access-token';
+
+          if (accessToken.isNotEmpty) {
+            options.headers['Authorization'] = 'Bearer $accessToken';
+          }
+
+          print('[REQUEST] ${options.method} ${options.uri}');
+          print('[HEADERS] ${options.headers}');
+
+          handler.next(options);
+        },
+        onResponse: (response, handler) {
+          // 서버 응답을 받은 뒤 실행됨
+          print('[RESPONSE] ${response.statusCode} ${response.requestOptions.uri}');
+
+          handler.next(response);
+        },
+        onError: (error, handler) {
+          // 요청 중 에러가 발생했을 때 실행됨
+          print('[ERROR] ${error.response?.statusCode} ${error.requestOptions.uri}');
+          print('[MESSAGE] ${error.message}');
+
+          handler.next(error);
+        },
+      ),
+    );
+  }
+
+  final Dio _dio = Dio(
+    BaseOptions(
+      baseUrl: 'https://jsonplaceholder.typicode.com',
+      connectTimeout: const Duration(seconds: 5),
+      receiveTimeout: const Duration(seconds: 5),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    ),
+  );
+
+  Future<List<dynamic>> fetchPosts() async {
+    final response = await _dio.get('/posts');
+    return response.data;
+  }
+
+  Future<Map<String, dynamic>> fetchPostById(int id) async {
+    final response = await _dio.get('/posts/$id');
+    return response.data;
+  }
+
+  Future<Map<String, dynamic>> createPost({
+    required String title,
+    required String body,
+    required int userId,
+  }) async {
+    final response = await _dio.post(
+      '/posts',
+      data: {
+        'title': title,
+        'body': body,
+        'userId': userId,
+      },
+    );
+
+    return response.data;
+  }
+}
+```
+- onRequest: 요청이 서버로 나가기 전에 실행. 토큰, header 추가 등
+- onResponse: 서버 응답을 받은 뒤 실행 됨. 응답 로그 출력, statusCode 처리
+
+```dart
+void main() async {
+  final apiService = ApiService();
+
+  try {
+    final posts = await apiService.fetchPosts();
+    print(posts.length);
+
+    final post = await apiService.fetchPostById(1);
+    print(post);
+
+    final newPost = await apiService.createPost(
+      title: 'Hello',
+      body: 'Dio interceptor example',
+      userId: 1,
+    );
+    print(newPost);
+  } on DioException catch (e) {
+    print('API error: ${e.message}');
+  } catch (e) {
+    print('Unknown error: $e');
+  }
+}
+```

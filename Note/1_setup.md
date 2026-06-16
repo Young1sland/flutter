@@ -32,6 +32,10 @@ If true, uses equatable for value equality and hashcode.
 ```sh
 dart create data_class
 ```
+- json 파일을 바탕으로 class 생성하기
+  - file 생성 후 json data를 붙여넣고 cmd+shift+p -> dart class generator from json -> class 이름 입력 -> seperate ~ No -> class 생성 됨
+  - json dummy 웹페이지를 통해 dummy json data를 받아와 테스트해 볼 수 있다. https://jsonplaceholder.typicode.com/
+
 
 #### (2) 그 외 extension
 
@@ -101,4 +105,9 @@ class MyWidget extends StatelessWidget {
 | `build`     | build 메서드 생성       |
 | `initState` | initState 생성       |
 | `dispose`   | dispose 생성         |
+
+
+## VS code에서 package 추가
+cmd+shift+p -> add dependency(dev dependency) -> package name 입력
+
 

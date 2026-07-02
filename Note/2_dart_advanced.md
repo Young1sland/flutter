@@ -910,3 +910,56 @@ void main() async {
   }
 }
 ```
+
+## Extension Method
+
+기존 클래스에 새로운 메소드를 붙여서 쓰는 dart 문법
+
+```
+//기본 형태
+extension ExtensionName on TargetType {
+  // 추가하고 싶은 getter, method 작성
+}
+```
+
+```dart
+//예시
+extension StringExtension on String {
+  bool get isEmail {
+    return contains('@') && contains('.');
+  }
+}
+
+extension IntExtension on int {
+  bool get isEvenNumber {
+    return this % 2 == 0;
+  }
+
+  int doubleValue() {
+    return this * 2;
+  }
+}
+
+void main() {
+  final email = 'test@example.com';
+
+  print(email.isEmail); // true
+
+  print(4.isEvenNumber); // true
+  print(4.doubleValue()); // 8
+}
+```
+
+### 자주 쓰이는 예
+```dart
+extension NavigatorExtension on BuildContext {
+  void pushPage(Widget page) {
+    Navigator.push(
+      this,
+      MaterialPageRoute(builder: (_) => page),
+    );
+  }
+}
+
+context.pushPage(const OtherPage());
+```
